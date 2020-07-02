@@ -1,51 +1,47 @@
-from builtins import range
-from datetime import timedelta
-
-import airflow
-from airflow.models import DAG
-from airflow.operators.bash_operator import BashOperator
+from airflow import DAG
+from datetime import datetime, timedelta
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
 
-args = {
+
+default_args = {
     'owner': 'airflow',
-    'start_date': airflow.utils.dates.days_ago(2),
+    'depends_on_past': False,
+    'start_date': datetime.utcnow(),
+    'email': ['airflow@example.com'],
+    'email_on_failure': False,
+    'email_on_retry': False,
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5)
 }
 
 dag = DAG(
-    dag_id='example_bash_operator1',
-    default_args=args,
-    schedule_interval='0 0 * * *',
-    dagrun_timeout=timedelta(minutes=60),
-)
+    'kubernetes_sample_airflow1', default_args=default_args, schedule_interval=timedelta(minutes=10))
 
-run_this_last = DummyOperator(
-    task_id='run_this_last',
-    dag=dag,
-)
 
-# [START howto_operator_bash]
-run_this = BashOperator(
-    task_id='run_after_loop',
-    bash_command='echo 1',
-    dag=dag,
-)
-# [END howto_operator_bash]
+start = DummyOperator(task_id='run_this_first', dag=dag)
 
-run_this >> run_this_last
+passing = KubernetesPodOperator(namespace='default',
+                          image="cpnprdacr.azurecr.io/test/a:v1",
+                          image_pull_policy='Always',
+                          image_pull_secrets='cpnprdacr',
+                          arguments=["test1.R"],
+                          labels={"foo": "bar"},
+                          name="passing-test1",
+                          task_id="passing-task1",
+                          get_logs=True,
+                          dag=dag
+                          )
 
-for i in range(3):
-    task = BashOperator(
-        task_id='runme_' + str(i),
-        bash_command='echo "{{ task_instance_key_str }}" && sleep 1',
-        dag=dag,
-    )
-    task >> run_this
+failing = KubernetesPodOperator(namespace='default',
+                          image="ubuntu:1604",
+                          cmds=["Python","-c"],
+                          arguments=["print('hello world')"],
+                          labels={"foo": "bar"},
+                          name="fail",
+                          task_id="failing-task",
+                          get_logs=True,
+                          dag=dag
+                          )
 
-# [START howto_operator_bash_template]
-also_run_this = BashOperator(
-    task_id='also_run_this',
-    bash_command='echo "run_id={{ run_id }} | dag_run={{ dag_run }}"',
-    dag=dag,
-)
-# [END howto_operator_bash_template]
-also_run_this >> run_this_last
+passing.set_upstream(start)
