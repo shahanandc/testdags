@@ -19,7 +19,7 @@ dag = DAG(
     'example_bash_operator1', default_args=default_args, schedule_interval=timedelta(minutes=1000))
 
 
-start = DummyOperator(task_id='run_this_first', dag=dag)
+start = DummyOperator(task_id='run_this_first_5', dag=dag)
 
 passing = KubernetesPodOperator(namespace='default',
                           image="cpnprdacr.azurecr.io/test/a:v1",
@@ -28,7 +28,7 @@ passing = KubernetesPodOperator(namespace='default',
                           arguments=["test1.R"],
                           labels={"foo": "bar"},
                           name="passing-test1",
-                          task_id="passing-task1",
+                          task_id="passing-task1_5",
                           get_logs=True,
                           dag=dag
                           )
@@ -39,7 +39,7 @@ failing = KubernetesPodOperator(namespace='default',
                           arguments=["print('hello world')"],
                           labels={"foo": "bar"},
                           name="fail",
-                          task_id="failing-task",
+                          task_id="failing-task_5",
                           get_logs=True,
                           dag=dag
                           )
