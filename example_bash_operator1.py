@@ -16,7 +16,7 @@ default_args = {
 }
 
 dag = DAG(
-    'example_bash_operator1', default_args=default_args, schedule_interval=timedelta(minutes=10000))
+    'example_bash_operator1_0', default_args=default_args, schedule_interval=timedelta(minutes=10000))
 
 
 start = DummyOperator(task_id='run_this_first_0', dag=dag)
