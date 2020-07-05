@@ -40,7 +40,7 @@ start = BashOperator(task_id='run_this_first_1',
                               ]                              
                           }
                       },
-                      bash_command="ls",
+                      bash_command="ls ../../../",
                       xcom_push=True,
                       dag=dag)
 
