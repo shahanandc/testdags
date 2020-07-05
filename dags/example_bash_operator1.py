@@ -29,7 +29,7 @@ start = DummyOperator(task_id='run_this_first_1',
                                    {
                                       "secretName":"cpnprdfilesharepv",
                                       "shareName":"cpmodeldata",
-                                      "readOnly":"false"
+                                      "readOnly":false
                                    }
                                   }
                               ],
@@ -65,7 +65,7 @@ failing = KubernetesPodOperator(namespace='default',
                                            {
                                               "secretName":"cpnprdfilesharepv",
                                               "shareName":"cpmodeldata",
-                                              "readOnly":"false"
+                                              "readOnly":false                                            
                                            }
                                           }
                                       ],
