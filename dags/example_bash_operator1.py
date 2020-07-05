@@ -41,6 +41,7 @@ start = BashOperator(task_id='run_this_first_1',
                           }
                       },
                       bash_command="echo 'command executed from BashOperator'",
+                      xcom_push=True
                       dag=dag)
 
 passing = KubernetesPodOperator(namespace='default',
