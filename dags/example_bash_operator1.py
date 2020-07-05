@@ -40,7 +40,7 @@ start = BashOperator(task_id='run_this_first_1',
                               ]                              
                           }
                       },
-                      bash_command="mkdir /mnt/cpmodeldata/ModelData/test1233",
+                      bash_command="mkdir -p /mnt/cpmodeldata/ModelData/test1233",
                       xcom_push=True,
                       dag=dag)
 
