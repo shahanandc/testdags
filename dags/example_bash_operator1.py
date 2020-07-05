@@ -28,8 +28,7 @@ start = DummyOperator(task_id='run_this_first_1',
                                    "azureFile" :
                                    {
                                       "secretName":"cpnprdfilesharepv",
-                                      "shareName":"cpmodeldata",
-                                      "readOnly":false
+                                      "shareName":"cpmodeldata"
                                    }
                                   }
                               ],
@@ -64,8 +63,7 @@ failing = KubernetesPodOperator(namespace='default',
                                            "azureFile" :
                                            {
                                               "secretName":"cpnprdfilesharepv",
-                                              "shareName":"cpmodeldata",
-                                              "readOnly":false                                            
+                                              "shareName":"cpmodeldata"                                   
                                            }
                                           }
                                       ],
