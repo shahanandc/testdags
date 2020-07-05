@@ -28,7 +28,7 @@ start = DummyOperator(task_id='run_this_first_1',
                                    "azureFile" :
                                    {
                                       "secretName":"cpnprdfilesharepv",
-                                      "shareName":"scheduleoptimizationdata",
+                                      "shareName":"cpmodeldata",
                                       "readOnly":"false"
                                    }
                                   }
@@ -56,27 +56,27 @@ passing = KubernetesPodOperator(namespace='default',
                           )
 
 failing = KubernetesPodOperator(namespace='default',
-                          executor_config={                            
-                          "KubernetesExecutor": {
-                              "volumes": [
-                                  {
-                                   "name": "cpnprdAzureFile",
-                                   "azureFile" :
-                                   {
-                                      "secretName":"cpnprdfilesharepv",
-                                      "shareName":"scheduleoptimizationdata",
-                                      "readOnly":"false"
-                                   }
+                                executor_config={                            
+                                  "KubernetesExecutor": {
+                                      "volumes": [
+                                          {
+                                           "name": "cpnprdAzureFile",
+                                           "azureFile" :
+                                           {
+                                              "secretName":"cpnprdfilesharepv",
+                                              "shareName":"cpmodeldata",
+                                              "readOnly":"false"
+                                           }
+                                          }
+                                      ],
+                                      "volume_mounts" : [
+                                          {
+                                              "name":"cpnprdAzureFile",
+                                              "mountPath":"/mnt/cpmodeldata"
+                                          }
+                                      ]                              
                                   }
-                              ],
-                              "volume_mounts" : [
-                                  {
-                                      "name":"cpnprdAzureFile",
-                                      "mountPath":"/mnt/cpmodeldata"
-                                  }
-                              ]                              
-                          }
-                      },      
+                          },      
                           image="ubuntu:1604",
                           cmds=["Python","-c"],
                           arguments=["print('hello world')"],
