@@ -24,7 +24,7 @@ start = DummyOperator(task_id='run_this_first_1',
                           "KubernetesExecutor": {
                               "volumes": [
                                   {
-                                   "name": "cpnprdAzureFile",
+                                   "name": "cpnprdazurefile",
                                    "azureFile" :
                                    {
                                       "secretName":"cpnprdfilesharepv",
@@ -34,7 +34,7 @@ start = DummyOperator(task_id='run_this_first_1',
                               ],
                               "volume_mounts" : [
                                   {
-                                      "name":"cpnprdAzureFile",
+                                      "name":"cpnprdazurefile",
                                       "mountPath":"/mnt/cpmodeldata"
                                   }
                               ]                              
@@ -59,7 +59,7 @@ failing = KubernetesPodOperator(namespace='default',
                                   "KubernetesExecutor": {
                                       "volumes": [
                                           {
-                                           "name": "cpnprdAzureFile",
+                                           "name": "cpnprdazurefile",
                                            "azureFile" :
                                            {
                                               "secretName":"cpnprdfilesharepv",
@@ -69,7 +69,7 @@ failing = KubernetesPodOperator(namespace='default',
                                       ],
                                       "volume_mounts" : [
                                           {
-                                              "name":"cpnprdAzureFile",
+                                              "name":"cpnprdazurefile",
                                               "mountPath":"/mnt/cpmodeldata"
                                           }
                                       ]                              
