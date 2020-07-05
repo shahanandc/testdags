@@ -19,7 +19,29 @@ dag = DAG(
     'example_bash_operator1', default_args=default_args, schedule_interval=timedelta(minutes=10000))
 
 
-start = DummyOperator(task_id='run_this_first_1', dag=dag)
+start = DummyOperator(task_id='run_this_first_1', 
+                      executor_config={                            
+                          "KubernetesExecutor": {
+                              "volumes": [
+                                  {
+                                   "name": "cpnprdAzureFile",
+                                   "azureFile" :
+                                   {
+                                      "secretName":"cpnprdfilesharepv",
+                                      "shareName":"scheduleoptimizationdata",
+                                      "readOnly":"false"
+                                   }
+                                  }
+                              ],
+                              "volume_mounts" : [
+                                  {
+                                      "name":"cpnprdAzureFile",
+                                      "mountPath":"/mnt/cpmodeldata"
+                                  }
+                              ]                              
+                          }
+                      },
+                      dag=dag)
 
 passing = KubernetesPodOperator(namespace='default',
                           image="cpnprdacr.azurecr.io/test/a:v1",
