@@ -56,6 +56,27 @@ passing = KubernetesPodOperator(namespace='default',
                           )
 
 failing = KubernetesPodOperator(namespace='default',
+                          executor_config={                            
+                          "KubernetesExecutor": {
+                              "volumes": [
+                                  {
+                                   "name": "cpnprdAzureFile",
+                                   "azureFile" :
+                                   {
+                                      "secretName":"cpnprdfilesharepv",
+                                      "shareName":"scheduleoptimizationdata",
+                                      "readOnly":"false"
+                                   }
+                                  }
+                              ],
+                              "volume_mounts" : [
+                                  {
+                                      "name":"cpnprdAzureFile",
+                                      "mountPath":"/mnt/cpmodeldata"
+                                  }
+                              ]                              
+                          }
+                      },      
                           image="ubuntu:1604",
                           cmds=["Python","-c"],
                           arguments=["print('hello world')"],
