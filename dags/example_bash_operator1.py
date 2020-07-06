@@ -40,6 +40,7 @@ volume = Volume(
 volume_mount = VolumeMount(
     "cpnprdazurefile",
     mount_path="/mnt/cpmodeldata",   
+    sub_path=None,
     read_only=False
 )
 
