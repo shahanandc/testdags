@@ -40,7 +40,7 @@ start = BashOperator(task_id='run_this_first_1',
                               ]                              
                           }
                       },
-                      bash_command="ls ../../../mnt/",
+                      bash_command="sleep 60",
                       xcom_push=True,
                       dag=dag)
 
