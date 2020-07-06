@@ -5,6 +5,7 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.bash_operator import BashOperator
 from airflow.contrib.kubernetes.volume import Volume
 from airflow.contrib.kubernetes.volume_mount import VolumeMount
+from airflow.contrib.kubernetes.pod import Resources
 
 default_args = {
     'owner': 'airflow',
@@ -25,6 +26,12 @@ compute_resources = \
   'request_memory': '21Gi',
   'limit_cpu': '1000m',
   'limit_memory': '21Gi'}
+
+pod_resources = Resources()
+pod_resources.request_cpu = '1000m'
+pod_resources.request_memory = '21Gi'
+pod_resources.limit_cpu = '2000m'
+pod_resources.limit_memory = '21Gi'
 
 volume = Volume(
     name="cpnprdazurefile",
@@ -92,7 +99,7 @@ io_1 = KubernetesPodOperator(namespace='default',
                           },      
                           image="cpnprdacr.azurecr.io/test/a:v1",
                           image_pull_policy='Always',
-                          resources=compute_resources,      
+                          resources=pod_resources,      
                           image_pull_secrets='cpnprdacr',
                           arguments=["/mnt/cpmodeldata/ModelData/IOINSTALLVOLUME/code/IOINSTALLVOLUME_Forecasting_Model.R","DEV","YES","NO","NO","NO","7","INS_IP_RES_NONWORKSHARE&INS_IP_RES_WORKSHARE"],
                           labels={"foo": "bar"},
