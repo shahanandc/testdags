@@ -21,10 +21,10 @@ dag = DAG(
     'example_bash_operator1', default_args=default_args, schedule_interval=timedelta(minutes=10000))
 
 compute_resources = \
-  {'request_cpu': '800m',
+  {
   'request_memory': '20Gi',
-  'limit_cpu': '800m',
-  'limit_memory': '20Gi'}
+  'limit_memory': '20Gi'
+  }
 
 volume = Volume(
     name="cpnprdazurefile",
@@ -129,7 +129,7 @@ iefs_repair_train = KubernetesPodOperator(namespace='default',
                           image_pull_policy='Always',
                           resources=compute_resources,      
                           image_pull_secrets='cpnprdacr',
-                          arguments=["/mnt/cpmodeldata/ModelData/IEFSINSTALLVOLUME/code/IEFSINSTALLVOLUME_Training_Model.R"],
+                          arguments=["/mnt/cpmodeldata/ModelData/IEFSREPAIRVOLUME/code/IEFSREPAIRVOLUME_Training_Model.R"],
                           labels={"foo": "bar"},
                           name="iefs_repair_train",
                           volumes=[volume],
