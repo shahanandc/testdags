@@ -69,7 +69,7 @@ start = BashOperator(task_id='run_this_first_1',
                       xcom_push=True,
                       dag=dag)
 
-iefs_install_train = KubernetesPodOperator(namespace='default',
+io_1 = KubernetesPodOperator(namespace='default',
                             executor_config={                            
                               "KubernetesExecutor": {
                                   "volumes": [
@@ -94,51 +94,18 @@ iefs_install_train = KubernetesPodOperator(namespace='default',
                           image_pull_policy='Always',
                           resources=compute_resources,      
                           image_pull_secrets='cpnprdacr',
-                          arguments=["/mnt/cpmodeldata/ModelData/IEFSINSTALLVOLUME/code/IEFSINSTALLVOLUME_Training_Model.R"],
+                          arguments=["/mnt/cpmodeldata/ModelData/IOINSTALLVOLUME/code/IOINSTALLVOLUME_Forecasting_Model.R","DEV","YES","NO","NO","NO","7","INS_IP_RES_NONWORKSHARE&INS_IP_RES_WORKSHARE"],
                           labels={"foo": "bar"},
-                          name="iefs_install_train",
-                          task_id="iefs_install_train",
+                          name="io_1",
+                          task_id="io_1",
                           get_logs=True,
                           volumes=[volume],
                           volume_mounts=[volume_mount],                   
                           dag=dag
                           )
 
-iefs_repair_train = KubernetesPodOperator(namespace='default',
-                            executor_config={                            
-                              "KubernetesExecutor": {
-                                  "volumes": [
-                                      {
-                                       "name": "cpnprdazurefile",
-                                       "azureFile" :
-                                       {
-                                          "secretName":"cpnprdfilesharepv",
-                                          "shareName":"cpmodeldata"
-                                       }
-                                      }
-                                  ],
-                                  "volume_mounts" : [
-                                      {
-                                          "name":"cpnprdazurefile",
-                                          "mountPath":"/mnt/cpmodeldata"
-                                      }
-                                  ]                              
-                              }
-                          },      
-                          image="cpnprdacr.azurecr.io/test/a:v1",
-                          image_pull_policy='Always',
-                          resources=compute_resources,      
-                          image_pull_secrets='cpnprdacr',
-                          arguments=["/mnt/cpmodeldata/ModelData/IEFSREPAIRVOLUME/code/IEFSREPAIRVOLUME_Training_Model.R"],
-                          labels={"foo": "bar"},
-                          name="iefs_repair_train",
-                          volumes=[volume],
-                          volume_mounts=[volume_mount],                   
-                          task_id="iefs_repair_train",
-                          get_logs=True,
-                          dag=dag
-                          )
 
-iefs_install_train.set_upstream(start)
-iefs_repair_train.set_upstream(start)
+
+iefs_install_train.set_upstream(io_1)
+
 
