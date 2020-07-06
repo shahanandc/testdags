@@ -22,9 +22,9 @@ dag = DAG(
 
 compute_resources = \
   {'request_cpu': '1000m',
-  'request_memory': '25Gi',
+  'request_memory': '21Gi',
   'limit_cpu': '1000m',
-  'limit_memory': '25Gi'}
+  'limit_memory': '21Gi'}
 
 volume = Volume(
     name="cpnprdazurefile",
