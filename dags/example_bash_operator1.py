@@ -40,7 +40,7 @@ start = BashOperator(task_id='run_this_first_1',
                               ]                              
                           }
                       },
-                      bash_command="sleep 60",
+                      bash_command="mkdir /mnt/cpmodeldata/ModelData/a",
                       xcom_push=True,
                       dag=dag)
 
