@@ -24,6 +24,23 @@ compute_resources = \
   'limit_cpu': '800m',
   'limit_memory': '20Gi'}
 
+volume = Volume(
+    name="cpnprdazurefile",
+    configs={
+        "azureFile" :
+         {
+           "secretName":"cpnprdfilesharepv",
+           "shareName":"cpmodeldata"
+         }
+    }
+)
+
+volume_mount = VolumeMount(
+    "cpnprdazurefile",
+    mount_path="/mnt/cpmodeldata",   
+    read_only=False
+)
+
 start = BashOperator(task_id='run_this_first_1', 
                       executor_config={                            
                           "KubernetesExecutor": {
@@ -79,6 +96,8 @@ iefs_install_train = KubernetesPodOperator(namespace='default',
                           name="iefs_install_train",
                           task_id="iefs_install_train",
                           get_logs=True,
+                          volumes=[volume],
+                          volume_mounts=[volume_mount],                   
                           dag=dag
                           )
 
@@ -110,6 +129,8 @@ iefs_repair_train = KubernetesPodOperator(namespace='default',
                           arguments=["/mnt/cpmodeldata/ModelData/IEFSINSTALLVOLUME/code/IEFSINSTALLVOLUME_Training_Model.R"],
                           labels={"foo": "bar"},
                           name="iefs_repair_train",
+                          volumes=[volume],
+                          volume_mounts=[volume_mount],                   
                           task_id="iefs_repair_train",
                           get_logs=True,
                           dag=dag
