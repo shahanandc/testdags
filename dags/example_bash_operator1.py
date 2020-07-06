@@ -21,10 +21,10 @@ dag = DAG(
     'example_bash_operator1', default_args=default_args, schedule_interval=timedelta(minutes=10000))
 
 compute_resources = \
-  {'request_cpu': '800m',
-  'request_memory': '20Gi',
-  'limit_cpu': '800m',
-  'limit_memory': '20Gi'}
+  {'request_cpu': '1000m',
+  'request_memory': '25Gi',
+  'limit_cpu': '1000m',
+  'limit_memory': '25Gi'}
 
 volume = Volume(
     name="cpnprdazurefile",
