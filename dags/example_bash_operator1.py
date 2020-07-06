@@ -5,6 +5,7 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.bash_operator import BashOperator
 from airflow.contrib.kubernetes.volume import Volume
 from airflow.contrib.kubernetes.volume_mount import VolumeMount
+from airflow.contrib.kubernetes.pod import Resources
 
 default_args = {
     'owner': 'airflow',
