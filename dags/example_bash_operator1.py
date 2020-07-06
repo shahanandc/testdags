@@ -106,6 +106,6 @@ io_1 = KubernetesPodOperator(namespace='default',
 
 
 
-iefs_install_train.set_upstream(io_1)
+io_1.set_upstream(start)
 
 
